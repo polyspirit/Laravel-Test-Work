@@ -32,7 +32,7 @@ class CityRepository implements MainRepositoryInterface
     {
         $userIds = $this->cutIdsfromAttributes($attributes, 'user_ids');
         $city = City::create($attributes);
-        $this->syncIds($city, $userIds);
+        $this->syncIds($city->relateUsers(), $userIds);
 
         return $city->append('users');
     }
@@ -43,7 +43,7 @@ class CityRepository implements MainRepositoryInterface
 
         $userIds = $this->cutIdsfromAttributes($attributes, 'user_ids');
         $city->update($attributes);
-        $this->syncIds($city, $userIds);
+        $this->syncIds($city->relateUsers(), $userIds);
 
         return $city->append('users');
     }
@@ -54,7 +54,7 @@ class CityRepository implements MainRepositoryInterface
         $affected = $city->delete();
 
         if ($affected) {
-            $city->users()->sync([]);
+            $city->relateUsers()->sync([]);
         } else {
             throw new \Exception('Resource was not deleted', 500);
         }

@@ -14,10 +14,10 @@ Trait Relatable
         return $ids;
     }
 
-    protected function syncIds(\Illuminate\Database\Eloquent\Model &$model, array $ids)
+    protected function syncIds(\Illuminate\Database\Eloquent\Relations\BelongsToMany $related, array $ids)
     {
         if ($ids) {
-            $model->cities()->sync($ids);
+            $related->sync($ids);
         }
     }
 }
