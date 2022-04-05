@@ -12,17 +12,24 @@ class City extends Model
     use HasFactory;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
-    protected $hidden = ['created_at', 'updated_at'];
-    // protected $appends = ['users'];
+    protected $hidden = ['relateUsers', 'created_at', 'updated_at'];
 
     protected $guard_name = 'api';
 
 
     // RELATIONS
 
-    public function users()
+    public function relateUsers()
     {
         return $this->belongsToMany(User::class);
+    }
+
+
+    // ATTRIBUTES
+
+    public function getUsersAttribute(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->relateUsers;
     }
 
 }

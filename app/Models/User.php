@@ -23,7 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password'
     ];
 
     /**
@@ -34,6 +34,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'api_token',
+        'relateCities',
         'created_at',
         'updated_at'
     ];
@@ -50,8 +52,16 @@ class User extends Authenticatable
 
     // RELATIONS
 
-    public function cities()
+    public function relateCities()
     {
         return $this->belongsToMany(City::class);
+    }
+
+
+    // ATTRIBUTES
+
+    public function getCitiesAttribute(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->relateCities;
     }
 }

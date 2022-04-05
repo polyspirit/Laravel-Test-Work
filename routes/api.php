@@ -5,6 +5,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CityController;
 
 /*
@@ -25,6 +26,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::apiResources([
+        'users' => UserController::class,
         'cities' => CityController::class
     ]);
 });

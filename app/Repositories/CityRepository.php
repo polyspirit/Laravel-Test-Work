@@ -4,39 +4,40 @@ namespace App\Repositories;
 
 use App\Models\City;
 use App\Repositories\Interfaces\MainRepositoryInterface;
+use App\Traits\Relatable;
 
 class CityRepository implements MainRepositoryInterface
 {
-    protected $cityModel;
+    use Relatable;
 
     public function all(): \Illuminate\Database\Eloquent\Collection
     {
-        return City::all();
+        return City::all()->append('users');
     }
 
     public function get(int $id): \App\Models\City
     {
-        return City::find($id);
+        return City::find($id)->append('users');
     }
 
     public function create(array $attributes): \App\Models\City
     {
-        $userIds = $this->cutUserIdsfromAttributes($attributes);
-        $city = $this->cityModel->create($attributes);
-        $this->syncUserIds($city, $userIds);
+        $userIds = $this->cutIdsfromAttributes($attributes, 'user_ids');
+        $city = City::create($attributes);
+        $this->syncIds($city, $userIds);
 
-        return $city;
+        return $city->append('users');
     }
 
     public function update(int $id, array $attributes): \App\Models\City
     {
         $city = City::find($id);
 
-        $userIds = $this->cutUserIdsfromAttributes($attributes);
+        $userIds = $this->cutIdsfromAttributes($attributes, 'user_ids');
         $city->update($attributes);
-        $this->syncUserIds($city, $userIds);
+        $this->syncIds($city, $userIds);
 
-        return $city;
+        return $city->append('users');
     }
 
     public function delete(int $id): \App\Models\City
@@ -51,26 +52,5 @@ class CityRepository implements MainRepositoryInterface
         }
 
         return $city;
-    }
-
-
-    // OTHER
-
-    private function cutUserIdsfromAttributes(array &$attributes): array
-    {
-        $userIds = [];
-        if (isset($attributes['user_ids'])) {
-            $userIds = json_decode($attributes['user_ids'], true);
-            unset($attributes['user_ids']);
-        }
-
-        return $userIds;
-    }
-
-    private function syncUserIds(City &$city, array $userIds)
-    {
-        if ($userIds) {
-            $city->users()->sync($userIds);
-        }
     }
 }

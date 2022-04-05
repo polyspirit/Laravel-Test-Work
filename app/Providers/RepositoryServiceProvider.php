@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 use App\Repositories\Interfaces\MainRepositoryInterface;
 use App\Repositories\CityRepository;
+use App\Repositories\UserRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             MainRepositoryInterface::class,
+            UserRepository::class,
             CityRepository::class
         );
     }

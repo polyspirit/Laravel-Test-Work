@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
-use App\Repositories\Interfaces\MainRepositoryInterface;
+use App\Repositories\CityRepository;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
 {
     private $cityRepository;
 
-    public function __construct(MainRepositoryInterface $cityRepository)
+    public function __construct(CityRepository $cityRepository)
     {
         $this->cityRepository = $cityRepository;
     }
@@ -34,7 +33,7 @@ class CityController extends Controller
         if (!$this->validateRequest(
             $request,
             [
-                'name' => 'required|max:255',
+                'name' => 'required|min:2|max:255',
                 'founded' => 'required|date_format:Y-m-d',
                 'population' => 'required|integer|max:9999999'
             ]
@@ -53,8 +52,9 @@ class CityController extends Controller
      */
     public function show(int $id)
     {
+        $city = $this->cityRepository->get($id);
         if (isset($city)) {
-            return $this->success($this->cityRepository->get($id));
+            return $this->success($city);
         }
 
         return $this->error('Resource not found', 404);

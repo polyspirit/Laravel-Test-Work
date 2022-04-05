@@ -14,7 +14,7 @@ class AuthController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return $user->generateAndSaveApiAuthToken();
+        return $user->generateAndSaveApiAuthToken()->makeVisible('api_token');
     }
 
     public function login(Request $request)
@@ -27,7 +27,7 @@ class AuthController extends Controller
         if (Auth::guard('web')->attempt($credentials)) {
             $user = Auth::guard('web')
                         ->user()
-                        ->generateAndSaveApiAuthToken();
+                        ->generateAndSaveApiAuthToken()->makeVisible('api_token');
 
             return $user;
         }
