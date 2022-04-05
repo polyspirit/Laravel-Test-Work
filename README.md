@@ -43,11 +43,12 @@ For example:
 ## Find
 
 You can use 'find' method for a selecting, sorting, filtering and limiting.
+You need to select 'id' field if you want to get 'appends fields'.
 Example: 
 
 ```javascript
 axios.post('/api/cities/find', {
-    fields: ['name', 'founded', 'population'],
+    fields: ['id', 'name', 'founded', 'population'],
     filter: [
         { field: 'name', operator: 'like', value: '%stan%' },
         { field: 'founded', operator: '>', value: '1987-02-19' },

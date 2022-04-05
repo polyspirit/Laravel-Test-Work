@@ -25,7 +25,7 @@ class CityRepository implements MainRepositoryInterface
 
     public function find(Request $request): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->findAllEntries($request, City::class);
+        return $this->findAllEntries($request, City::class)->append('users');
     }
 
     public function create(array $attributes): \App\Models\City

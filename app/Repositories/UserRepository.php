@@ -25,7 +25,7 @@ class UserRepository implements MainRepositoryInterface
 
     public function find(Request $request): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->findAllEntries($request, User::class);
+        return $this->findAllEntries($request, User::class)->append('cities');
     }
 
     public function create(array $attributes): \App\Models\User
