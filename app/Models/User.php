@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Models\City;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Tokenable;
@@ -46,13 +48,10 @@ class User extends Authenticatable
     ];
 
 
-    public function saveUser($request): self
-    {
-        $this->name = $request->name ?? $request->email;
-        $this->email = $request->email;
-        $this->password = bcrypt($request->password);
-        $this->save();
+    // RELATIONS
 
-        return $this;
+    public function cities()
+    {
+        return $this->belongsToMany(City::class);
     }
 }

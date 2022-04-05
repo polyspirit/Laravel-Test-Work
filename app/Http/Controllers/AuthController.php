@@ -9,7 +9,12 @@ class AuthController extends Controller
 {
     public function register(Request $request, User $user)
     {
-        return $user->saveUser($request)->generateAndSaveApiAuthToken();
+        $user->name = $request->name ?? $request->email;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return $user->generateAndSaveApiAuthToken();
     }
 
     public function login(Request $request)
