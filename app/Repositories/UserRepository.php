@@ -2,13 +2,16 @@
 
 namespace App\Repositories;
 
+use Illuminate\Http\Request;
+
 use App\Models\User;
 use App\Repositories\Interfaces\MainRepositoryInterface;
 use App\Traits\Relatable;
+use App\Traits\Findable;
 
 class UserRepository implements MainRepositoryInterface
 {
-    use Relatable;
+    use Relatable, Findable;
 
     public function all(): \Illuminate\Database\Eloquent\Collection
     {
@@ -18,6 +21,11 @@ class UserRepository implements MainRepositoryInterface
     public function get(int $id): \App\Models\User
     {
         return User::find($id)->append('cities');
+    }
+
+    public function find(Request $request): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->findAllEntries($request, User::class);
     }
 
     public function create(array $attributes): \App\Models\User

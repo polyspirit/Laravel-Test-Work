@@ -26,6 +26,14 @@ class CityController extends Controller
     }
 
     /**
+     * Display a filtering and sorting listing of the resource.
+     */
+    public function find(Request $request)
+    {
+        return $this->success($this->cityRepository->find($request));
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

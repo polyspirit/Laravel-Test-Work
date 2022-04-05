@@ -29,4 +29,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         'users' => UserController::class,
         'cities' => CityController::class
     ]);
+
+    Route::post('/users/find', [UserController::class, 'find']);
+    Route::post('/cities/find', [CityController::class, 'find']);
 });
